@@ -1,11 +1,27 @@
+const socket = io()
+
+productForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  let newProduct = {
+    title: formGroupExampleInput.value,
+    price: parseInt(formGroupExampleInput2.value),
+    pictureUrl: formGroupExampleInput3.value,
+  };
+  
+  socket.emit("addProduct", newProduct);
+  formGroupExampleInput.value = "";
+  formGroupExampleInput2.value = "";
+  formGroupExampleInput3.value = "";
+});
+
 (() => {
   const app = document.querySelector(".app");
-  const socket = io();
   let uname;
   let today= new Date()
   let now= today.toLocaleString()
 
   app.querySelector(".join-screen #join-user").addEventListener("click", () => {
+    
     let username = app.querySelector(".join-screen #email").value;
     if (username.length == 0) {
       return;
@@ -18,8 +34,8 @@
 
   app
     .querySelector(".chat-screen #send-message")
-    .addEventListener("click", (e) => {
-        e.preventDefault();
+    .addEventListener("click", () => {
+        
       let message = app.querySelector(".chat-screen #message-input").value;
       if (message.length == 0) {
         return;
@@ -34,8 +50,8 @@
       });
       app.querySelector(".chat-screen #message-input").value= "";
     });
-  app.querySelector(".chat-screen #exit-chat").addEventListener("click", (e) => {
-    e.preventDefault()
+  app.querySelector(".chat-screen #exit-chat").addEventListener("click", () => {
+    
     socket.emit("exituser", uname);
     window.location.href = window.location.href;
   });
@@ -79,3 +95,4 @@
       messageContainer.scrollHeight - messageContainer.clientHeight;
   }
 })();
+

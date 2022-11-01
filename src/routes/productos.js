@@ -3,8 +3,9 @@ const { ProductsController } = require("../controller/productos.js");
 const router = Router();
 
 //Mostrar todos los productos en memoria /api/products
-router.get("/", (req, res) => {
-    const products=ProductsController.getAll()
+router.get("/", (req, res,) => {
+    
+  const products=ProductsController.getAll()
     res.render('./parcials/vista' , {products})
   //res.json({
   // msg: ProductsController.getAll(),

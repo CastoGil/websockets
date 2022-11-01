@@ -5,13 +5,18 @@ const mainRouter = require("../routes/index");
 const app = express();
 const io = require('socket.io'); //leemos el servidor socket
 const http = require("http");
-
 const { ProductsController } = require("../controller/productos"); //leemos el controlador de los productos
 
 //Servidor http y ioServer
 const httpServer= http.Server(app)
 const socketServer= io(httpServer)
 
+
+const productData = {
+  title: undefined,
+  price: undefined,
+  pictureUrl: undefined,
+};
 //Servidor para el chat
 socketServer.on("connection", (socket) => {
   let today= new Date()
@@ -25,7 +30,13 @@ socketServer.on("connection", (socket) => {
   socket.on("chat", (message)=>{
     socket.broadcast.emit("chat", message)
   })
+  socket.on("addProduct", (newProduct)=>{
+    productData.title= newProduct.title
+    productData.price= newProduct.price
+    productData.pictureUrl= newProduct.pictureUrl
+    ProductsController.save(productData)
 
+  })
   console.log("new user connected. Soquet id:", socket.id);
 });
 
